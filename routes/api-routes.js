@@ -31,9 +31,13 @@ module.exports = function(app) {
   });
 
   // Route for logging user out
-  app.get("/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
+  app.get("/logout", (req, res, next) => {
+    req.logout(err => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
   });
 
   // Route for getting some data about our user to be used client side
